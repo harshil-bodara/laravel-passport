@@ -18,8 +18,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -88,8 +88,8 @@ class AuthController extends Controller
     {
         $id = $request->input('id');
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required|string',
-            'lastname' => 'required|string'
+            'first_name' => 'required|string',
+            'last_name' => 'required|string'
         ]);
 
         if ($validator->fails())
@@ -98,8 +98,8 @@ class AuthController extends Controller
         }
 
         $profile = User::where('id',$id)->update([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email
         ]);
 
