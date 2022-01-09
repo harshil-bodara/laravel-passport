@@ -70,66 +70,6 @@ class AuthController extends Controller
         return response($response, 200);
     }
 
-    public function get_profile(Request $request,$id)
-    {
-        $get_profile = User::find($id);
-
-        if(!empty($get_profile))
-        {
-            $response = ['profile' => $get_profile];
-        } else {
-            $response = ['message' => 'User Not Found'];
-        }
-
-        return response($response, 200);
-    }
-
-    public function update_profile(Request $request)
-    {
-        $id = $request->input('id');
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string'
-        ]);
-
-        if ($validator->fails())
-        {
-            return response(['errors'=>$validator->errors()->all()], 422);
-        }
-
-        $profile = User::where('id',$id)->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email
-        ]);
-
-        $get_profile = User::find($id);
-
-        if(!empty($get_profile))
-        {
-            $response = ['message' => 'User Profile updated successfully', 'profile' => $get_profile];
-        } else {
-            $response = ['message' => 'User Not Found'];
-        }
-
-        return response($response, 200);
-    }
-
-    public function delete_profile($id)
-    {
-        $user = User::find($id);
-
-        if(!empty($user))
-        {
-            $user->delete();
-            $response = ['message' => 'Profile deleted successfully'];
-        } else {
-            $response = ['message' => 'Profile Not Found'];
-        }
-
-        return response($response, 200);
-    }
-
     protected function sendResetLinkResponse(Request $request)
     {
         $input = $request->only('email');
@@ -181,6 +121,6 @@ class AuthController extends Controller
         $date = date('Y-m-d g:i:s');
         $user->email_verified_at = $date;
         $user->save();
-        return response()->json(['message','Email verified!']);
+        return response()->json(['message' => 'Email verified!']);
     }
 }

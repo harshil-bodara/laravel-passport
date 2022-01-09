@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// Controllers
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +33,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/user/logout', [AuthController::class, 'logout']);
-    Route::get('/user/profile/{id}', [AuthController::class, 'get_profile']);
-    Route::post('/user/update_profile', [AuthController::class, 'update_profile']);
-    Route::delete('/user/delete_profile/{id}', [AuthController::class, 'delete_profile']);
+
+    // user controller
+    Route::resource('user', UsersController::class);
 });
