@@ -34,7 +34,7 @@ class AuthController extends Controller
         $user = User::create($request->toArray());
         $user->sendEmailVerificationNotification();
         $token = $user->createToken('Personal Access Token')->accessToken;
-        $response = ['token' => $token];
+        $response = ['token' => $token,"message"=>"You have successfully sign in!"];
         return response($response, 200);
     }
 
@@ -51,7 +51,7 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['token' => $token];
+                $response = ['token' => $token,"message"=>"You have successfully logged in!"];
                 return response($response, 200);
             } else {
                 $response = ["message" => "Password mismatch"];
@@ -121,6 +121,6 @@ class AuthController extends Controller
         $date = date('Y-m-d g:i:s');
         $user->email_verified_at = $date;
         $user->save();
-        return response()->json(['message' => 'Email verified!']);
+        return response()->json(['message' => 'You have verified successfully email!']);
     }
 }
