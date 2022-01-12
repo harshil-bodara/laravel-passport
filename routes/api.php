@@ -25,7 +25,7 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('/user/register', [AuthController::class, 'register']);
     Route::post('/user/lost-password', [AuthController::class, 'sendResetLinkResponse']);
     Route::post('/user/reset-password', [AuthController::class, 'sendResetResponse']);
-    Route::get('/user/verify-email/{id}', [AuthController::class, 'verify']);
+    Route::get('/user/verify-email/{id}', [AuthController::class, 'verify'])->name('verification');
 });
 
 Route::middleware('auth:api')->group(function () {
