@@ -20,13 +20,13 @@ use App\Http\Controllers\API\UserController;
 |
 */
 
-Route::group(['middleware' => ['cors', 'json.response']], function () {
-    Route::post('/user/login', [AuthController::class, 'login']);
-    Route::post('/user/register', [AuthController::class, 'register']);
-    Route::post('/user/lost-password', [AuthController::class, 'sendResetLinkResponse']);
-    Route::post('/user/reset-password', [AuthController::class, 'sendResetResponse']);
-    Route::get('/user/verify-email/{id}', [AuthController::class, 'verify'])->name('verification');
-});
+// Route::group(['middleware' => ['cors', 'json.response']], function () {
+//     Route::post('/user/login', [AuthController::class, 'login']);
+//     Route::post('/user/register', [AuthController::class, 'register']);
+//     Route::post('/user/lost-password', [AuthController::class, 'sendResetLinkResponse']);
+//     Route::post('/user/reset-password', [AuthController::class, 'sendResetResponse']);
+//     Route::get('/user/verify-email/{id}', [AuthController::class, 'verify'])->name('verification');
+// });
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/user/logout', [AuthController::class, 'logout']);
