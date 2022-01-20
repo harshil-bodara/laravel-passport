@@ -15,6 +15,7 @@ use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
+    
     public function register(Request $request) {
         $validator = Validator::make($request->all(),[
             'first_name' => ['required', 'string', 'max:255'],
@@ -25,12 +26,13 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
-        $request['password']=Hash::make($request['password']);
+        $request['password'] = Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
         $user = User::create($request->toArray());
         $user->sendEmailVerificationNotification();
         $token = $user->createToken('Personal Access Token')->accessToken;
-        $response = ['request' => $request->except('password','password_confirmation'), 'token' => $token,"message"=>"Registration successful."];
+        $response = ['request' => $request->except('password','password_confirmation'), 
+            'token' => $token,"message"=>"Registration successful."];
         return response($response, 200);
     }
 
@@ -43,7 +45,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('u_email', $request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
@@ -119,6 +121,10 @@ class AuthController extends Controller
         $date = date('Y-m-d g:i:s');
         $user->email_verified_at = $date;
         $user->save();
+
+        return redirect()->away('http://localhost:3000/login');
+        return Redirect::to('http://localhost:3000/login');
+        return view('EmailVerified');
         return response()->json(['message' => 'Your E-Mail has been verified.']);
     }
 }

@@ -48,11 +48,11 @@ class UsersController extends Controller
      */
     public function show(Request $request,$id)
     {
-        $get_profile = User::find($id);
+        $profile = User::find($id);
 
-        if(!empty($get_profile))
+        if(!empty($profile))
         {
-            $response = ['profile' => $get_profile];
+            $response = ['profile' => $profile];
         } else {
             $response = ['message' => 'User Not Found'];
         }

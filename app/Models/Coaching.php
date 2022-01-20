@@ -8,9 +8,10 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Fee;
 
-class Coaching extends Model
-{
-    use HasFactory;    
+class Coaching extends Model {
+
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'c_is_active',
@@ -26,31 +27,31 @@ class Coaching extends Model
         'c_type_online',
         'c_type_offline',
         'c_type_inhouse',
-        'c_avail_morning',        
+        'c_avail_morning',
         'c_avail_afternoon',
-        'c_avail_evening',        
+        'c_avail_evening',
         'c_quotation',
         'c_quotation_from',
         'c_time_zone'
     ];
     protected $table = 'coachings';
     protected $primaryKey = 'id';
-    protected $hidden = array('created_at','updated_at');
+    protected $hidden = array('created_at', 'updated_at');
 
-    public function tags()
-    {
-        return $this->hasMany(Tag::class)
-        ->join('coaching_categories', 'coaching_tags.category_id', '=', 'coaching_categories.id');
+//    public function tags() {
+//        return $this->hasMany(CoachingTags::class)
+//        ->join('coaching_categories','coaching_tags.id','=','coaching_categories.id')
+//        ->join('tags','coaching_tags.tag_id','=','tags.id')
+        /* ->select(['coaching_tags.*','tags.tag_name','coaching_categories.category_name_en','coaching_tags.category_id']) */
+//        ;
+//    }
+
+    public function coaching_tags() {
+        return $this->hasMany(CoachingTags::class);
     }
 
-    public function fees()
-    {
+    public function fees() {
         return $this->hasMany(Fee::class);
     }
 
-    public function homeList()
-    {
-        return $this->hasManyThrough(Tag::class, Category::class);
-    }
-    
 }
