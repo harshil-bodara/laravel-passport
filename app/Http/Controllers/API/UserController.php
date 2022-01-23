@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -59,16 +59,7 @@ class UsersController extends Controller
 
         return response($response, 200);    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request,$id)
-    {
-           //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -91,8 +82,8 @@ class UsersController extends Controller
         }
 
         $profile = User::where('id',$id)->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
+            'u_first_name' => $request->first_name,
+            'u_last_name' => $request->last_name,
             'email' => $request->email
         ]);
 
@@ -127,5 +118,16 @@ class UsersController extends Controller
         }
 
         return response($response, 200);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request,$id)
+    {
+           //
     }
 }

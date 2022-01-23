@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 // Controllers
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,20 +21,18 @@ use App\Http\Controllers\API\AuthController;
 Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('/user/login', [AuthController::class, 'login']);
     Route::post('/user/register', [AuthController::class, 'register']);
-    Route::post('/user/lost-password', [AuthController::class, 'sendResetLinkResponse']);
+    Route::post('/user/lost-password', [AuthController::class, 'sendResetLinkResponse'])->name('password.reset');
     Route::post('/user/reset-password', [AuthController::class, 'sendResetResponse']);
     Route::get('/verify-email/{id}/{hash}', [AuthController::class, 'verify'])->name('verification.verify');
 });
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/user/logout', [AuthController::class, 'logout']);
-
-    // user controller
-    //Route::resource('user', UserController::class);
 });
 
 Route::prefix('v1')->namespace('App\Http\Controllers\API')->group(function() {
     // Resources
+    Route::resource('user', 'UserController');
     Route::resource('coachings','CoachingController');
     Route::resource('coach-country','CoachCountryController');
     Route::resource('coach-type','CoachTypeController');

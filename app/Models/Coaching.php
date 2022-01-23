@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
-use App\Models\Tag;
 use App\Models\Fee;
 
 class Coaching extends Model {
@@ -37,14 +35,6 @@ class Coaching extends Model {
     protected $table = 'coachings';
     protected $primaryKey = 'id';
     protected $hidden = array('created_at', 'updated_at');
-
-//    public function tags() {
-//        return $this->hasMany(CoachingTags::class)
-//        ->join('coaching_categories','coaching_tags.id','=','coaching_categories.id')
-//        ->join('tags','coaching_tags.tag_id','=','tags.id')
-        /* ->select(['coaching_tags.*','tags.tag_name','coaching_categories.category_name_en','coaching_tags.category_id']) */
-//        ;
-//    }
 
     public function coaching_tags() {
         return $this->hasMany(CoachingTags::class);

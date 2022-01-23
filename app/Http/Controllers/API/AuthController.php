@@ -18,8 +18,8 @@ class AuthController extends Controller
     
     public function register(Request $request) {
         $validator = Validator::make($request->all(),[
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'u_first_name' => ['required', 'string', 'max:255'],
+            'u_last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -28,6 +28,7 @@ class AuthController extends Controller
         }
         $request['password'] = Hash::make($request['password']);
         $request['remember_token'] = Str::random(10);
+        //return $request->toArray();
         $user = User::create($request->toArray());
         $user->sendEmailVerificationNotification();
         $token = $user->createToken('Personal Access Token')->accessToken;
@@ -45,7 +46,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
-        $user = User::where('u_email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
@@ -70,7 +71,8 @@ class AuthController extends Controller
     }
 
 
-    protected function sendResetLinkResponse(Request $request) {
+    protected function sendResetLinkResponse(Request $request)
+    {
         $input = $request->only('email');
         $validator = Validator::make($input, [
             'email' => "required|email"
@@ -82,7 +84,7 @@ class AuthController extends Controller
         if($response == Password::RESET_LINK_SENT){
             $message = "Mail send successfully";
         }else{
-            $message = "E-Mail could not be sent to this address.";
+            $message = "Email could not be sent to this email address";
         }
         $response = ['message' => $message];
         return response($response, 200);
@@ -100,9 +102,8 @@ class AuthController extends Controller
             return response(['errors'=>$validator->errors()->all()], 422);
         }
         $response = Password::reset($input, function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->save();
+            $user->forceFill(['password' => Hash::make($password)])
+                ->save();
             event(new PasswordReset($user));
         });
         if($response == Password::PASSWORD_RESET){
